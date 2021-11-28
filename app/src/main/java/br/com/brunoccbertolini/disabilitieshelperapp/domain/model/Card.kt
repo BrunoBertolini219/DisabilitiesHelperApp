@@ -10,7 +10,8 @@ data class Card(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val title: String,
-    val imgUrl: String,
+    val imgUrl: Int,
+    val color: Int,
     val category: String,
     val parentCard: Boolean? = false
 ): Serializable

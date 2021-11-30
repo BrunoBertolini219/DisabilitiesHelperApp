@@ -4,14 +4,17 @@ import android.content.Context
 import androidx.room.Room
 import br.com.brunoccbertolini.disabilitieshelperapp.data.local.CardDao
 import br.com.brunoccbertolini.disabilitieshelperapp.data.local.CardDatabase
-import br.com.brunoccbertolini.disabilitieshelperapp.data.repository.CommunicationHelperRepositoyImpl
+import br.com.brunoccbertolini.disabilitieshelperapp.data.repository.CommunicationHelperRepositoryImpl
 import br.com.brunoccbertolini.disabilitieshelperapp.util.Constants.Companion.DATABASE_NAME
 import br.com.brunoccbertolini.disabilitieshelperapp.domain.repository.CommunicationHelperRepository
+import br.com.brunoccbertolini.disabilitieshelperapp.util.DispatcherProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
 @Module
@@ -36,6 +39,19 @@ object DataModule {
     @Provides
     fun provideDefaultCommunicationRepository(
         dao: CardDao
-    ): CommunicationHelperRepository = CommunicationHelperRepositoyImpl(dao)
+    ): CommunicationHelperRepository = CommunicationHelperRepositoryImpl(dao)
+
+    @Singleton
+    @Provides
+    fun provideDispatchers(): DispatcherProvider = object : DispatcherProvider {
+        override val main: CoroutineDispatcher
+            get() = Dispatchers.Main
+        override val io: CoroutineDispatcher
+            get() = Dispatchers.IO
+        override val default: CoroutineDispatcher
+            get() = Dispatchers.Default
+        override val unconfined: CoroutineDispatcher
+            get() = Dispatchers.Unconfined
+    }
 
 }

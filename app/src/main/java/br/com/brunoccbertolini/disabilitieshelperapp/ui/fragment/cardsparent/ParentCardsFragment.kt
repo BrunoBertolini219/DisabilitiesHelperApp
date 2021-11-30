@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.GeneratedAdapter
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.brunoccbertolini.disabilitieshelperapp.R
@@ -18,6 +19,7 @@ import br.com.brunoccbertolini.disabilitieshelperapp.databinding.ParentCardsFrag
 import br.com.brunoccbertolini.disabilitieshelperapp.domain.model.Card
 import br.com.brunoccbertolini.disabilitieshelperapp.ui.adapter.CardsAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class ParentCardsFragment : Fragment() {
@@ -43,20 +45,33 @@ class ParentCardsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         onClickListener()
+        setupCollector()
     }
 
+    private fun setupCollector() {
+        viewModel.getAllParentCards()
 
+        lifecycleScope.launchWhenCreated {
+            viewModel.getAllCardParentFlow.collect { event ->
+                when(event) {
+                    is ParentCardsViewModel.CardsState.Success -> {
+                        adapterCard.differ.submitList(event.cards)
+                    }
+                }
+            }
+        }
+    }
 
 
     private fun setupRecyclerView() {
         adapterCard = CardsAdapter()
-        adapterCard.differ.submitList(mockList())
         viewBinding.rvCardsParent.apply {
             adapter = adapterCard
             layoutManager = LinearLayoutManager(requireContext())
-
         }
     }
+
+
 
     private fun onClickListener(){
         adapterCard.setOnItemClickListener {
@@ -64,50 +79,5 @@ class ParentCardsFragment : Fragment() {
         }
     }
 
-    private fun mockList():List<Card> {
-        return listOf<Card>(
-            Card(
-                imgUrl = R.drawable.ic_sick,
-                title = "DOR",
-                color = Color.MAGENTA,
-                category = "DOR",
-                parentCard = true
-            ),
-            Card(
-                imgUrl = R.drawable.ic_hot,
-                title = "CALOR",
-                color = Color.RED,
-                category = "CALOR",
-                parentCard = true
-            ),
-            Card(
-                imgUrl = R.drawable.ic_cold,
-                title = "FRIO",
-                color = Color.BLUE,
-                category = "FRIO",
-                parentCard = true
-            ),
-            Card(
-                imgUrl = R.drawable.ic_sleep,
-                title = "DORMIR",
-                color = Color.LTGRAY,
-                category = "DORMIR",
-                parentCard = true
-            ),
-            Card(
-                imgUrl = R.drawable.ic_shower,
-                title = "HIGIENE",
-                color = Color.GREEN,
-                category = "HIGIENE",
-                parentCard = true
-            ),
-            Card(
-                imgUrl = R.drawable.ic_food_time,
-                title = "FOME/SEDE",
-                color = Color.YELLOW,
-                category = "FOME/SEDE",
-                parentCard = true
-            )
-        )
-    }
+
 }

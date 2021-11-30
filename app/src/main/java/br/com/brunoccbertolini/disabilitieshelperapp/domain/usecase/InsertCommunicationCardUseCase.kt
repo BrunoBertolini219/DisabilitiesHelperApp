@@ -8,8 +8,8 @@ class InsertCommunicationCardUseCase @Inject constructor(
     private val repository: CommunicationHelperRepository
 ) {
 
-    suspend operator fun invoke(id: Card){
-        repository.insertCard(id)
+    suspend operator fun invoke(card: Card){
+        repository.insertCard(card)
     }
 
 }

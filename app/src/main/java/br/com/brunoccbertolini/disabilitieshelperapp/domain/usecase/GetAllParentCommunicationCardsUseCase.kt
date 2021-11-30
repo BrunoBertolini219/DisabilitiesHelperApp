@@ -2,6 +2,7 @@ package br.com.brunoccbertolini.disabilitieshelperapp.domain.usecase
 
 import br.com.brunoccbertolini.disabilitieshelperapp.domain.model.Card
 import br.com.brunoccbertolini.disabilitieshelperapp.domain.repository.CommunicationHelperRepository
+import br.com.brunoccbertolini.disabilitieshelperapp.util.Resource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

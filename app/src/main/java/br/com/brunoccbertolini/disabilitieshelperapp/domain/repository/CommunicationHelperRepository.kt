@@ -1,6 +1,7 @@
 package br.com.brunoccbertolini.disabilitieshelperapp.domain.repository
 
 import br.com.brunoccbertolini.disabilitieshelperapp.domain.model.Card
+import br.com.brunoccbertolini.disabilitieshelperapp.util.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface CommunicationHelperRepository {

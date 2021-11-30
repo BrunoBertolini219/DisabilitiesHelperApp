@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.GeneratedAdapter
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.brunoccbertolini.disabilitieshelperapp.R
 import br.com.brunoccbertolini.disabilitieshelperapp.databinding.ChildrenCardsFragmentBinding
 import br.com.brunoccbertolini.disabilitieshelperapp.databinding.ParentCardsFragmentBinding
@@ -52,7 +53,7 @@ class ParentCardsFragment : Fragment() {
         adapterCard.differ.submitList(mockList())
         viewBinding.rvCardsParent.apply {
             adapter = adapterCard
-            layoutManager = GridLayoutManager(requireContext(), 2)
+            layoutManager = LinearLayoutManager(requireContext())
 
         }
     }
